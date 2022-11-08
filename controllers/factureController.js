@@ -1,13 +1,19 @@
 const Facture = require('../models/factureModel.js');
 
 // POST a Facture
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
     
     const Produit = require('../models/produitModel.js');
     let listeProduits = [];
     for (const produit in req.body.facture.listeProduits) {
-        let p = Produit.find({ idProduit: produit.produit })
-        p.quantité = produit.quantité
+        let p = await Produit.find({ idProduit: produit.produit });
+        if (p.quantité < 1) {
+            res.status(500).send({
+                message: "the product " + p.nom + " in the bill isn't available at the moment"
+            });
+        }
+        await Produit.updateOne({idProduit:p.idProduit}, {$set:{quantité:p.quantité - 1}});
+        p.quantité = produit.quantité;
         listeProduits.push(p);
     }
 

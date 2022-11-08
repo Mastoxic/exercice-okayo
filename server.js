@@ -1,4 +1,6 @@
 const express = require("express");
+
+// for Cross-origin resource sharing
 const cors = require("cors");
 
 var corsOptions = {

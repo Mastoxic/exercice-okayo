@@ -21,6 +21,7 @@ module.exports = function(app) {
     // produits Routes
     app.post('/api/produitCreate', produits.create);
     app.get('/api/produits', produits.findAll);
+    app.put('/api/updateProduitsTVA', produits.updateProduitsTVA);
 
     // variationTVAs Routes
     app.post('/api/variationTVACreate', variationTVAs.create);
