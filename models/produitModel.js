@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
 const ProduitSchema = mongoose.Schema({
-    nom: { type: String, required: true},
-    quantité: { type: Number, required: true},
-    prixHT: { type: Number, required: true},
-    TVA: { type: Number, required: true },
-    état: { type: String, default: "non payée"}
+    nom: { type: String, required: true },
+    quantité: { type: Number, required: true },
+    prixHT: { type: Number, required: true },
+    TVA: { type: Number, required: true }
 });
 
 ProduitSchema.method("toJSON", function() {
