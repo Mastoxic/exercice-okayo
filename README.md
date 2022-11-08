@@ -1,9 +1,9 @@
 # exercice-okayo
 
-Dans le cadre de cet exercice, j'ai fait une api permettant de stocker et consulter des factures.
-Elle permet donc aussi d'ajouter et consulter des clients et pareil pour les produits.
-On peut aussi modifier la TVA, à une date précise ou pour une période donnée.
-On peut aussi modifier le nom ou le prix d'un produit/prestation.
+Dans le cadre de cet exercice, j'ai fait une API avec mongoose en JavaScript permettant de stocker dans une base de données MongoDB et consulter des factures.
+Elle permet donc aussi d'ajouter et consulter des clients et des produits.
+On peut aussi modifier la TVA d'un produit, à une date précise ou pour une période donnée.
+Enfin, on peut modifier le nom ou le prix d'un produit/prestation.
 
 
 ## Utilisation
