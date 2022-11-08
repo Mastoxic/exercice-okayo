@@ -9,8 +9,7 @@ On peut aussi modifier le nom ou le prix d'un produit/prestation.
 ## Utilisation
 
 Ouvrir l'invite de commande et aller à l'emplacement du projet puis entrer la commande suivante:
-```npm start
-```
+```npm start```
 Cela permet de lancer l'api en local.
 
 Ensuite, on peut utiliser l'api et ses différentes requêtes, comme:
