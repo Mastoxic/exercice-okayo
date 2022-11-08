@@ -10,6 +10,7 @@ exports.create = (req, res) => {
         prixHT: req.body.prixHT,
         TVA: req.body.TVA
     });
+    produit.prixTTC = (1+produit.TVA)*produit.prixHT
 
     // Save a Produit in the MongoDB
     produit.save()
@@ -46,24 +47,24 @@ exports.updateProduitsTVA = (req, res) => {
     .then(async produits => {
         let today = Date.now();
         // get all past or current VariationTVAs of all products
-        let allVariationTVAs = await VariationTVA.find({dateDébut:{$lt:today}},{dateDébut:1,_id:0}).sort({dateDébut:1});
-        for (let p in produits) {
+        let allVariationTVAs = await VariationTVA.find({dateDébut:{$lt:today}}).sort({dateDébut:1});
+        for (let p of produits) {
             // get all past or current VariationTVAs of each Produit
-            var variationTVAs = allVariationTVAs.filter(tva => tva.idProduit == p.idProduit);
-            for (let tva in variationTVAs) {
+            var variationTVAs = allVariationTVAs.filter(tva => tva.idProduit.equals(p._id));
+            for (let tva of variationTVAs) {
                 // if past
-                if (tva.dateFin < today) {
+                if (tva.dateFin != null && tva.dateFin < today) {
                     if (tva.nouvelleTVA == p.TVA) {
-                        p.TVA = tva.ancienneTVA;
+                        let nouveauPrixTTC = (1+tva.ancienneTVA)*p.prixHT;
+                        await Produit.findByIdAndUpdate(p._id, {$set:{TVA: tva.ancienneTVA, prixTTC: nouveauPrixTTC}});
                     }
                 }
                 // if current
                 else {
-                    p.TVA = tva.nouvelleTVA;
+                    let nouveauPrixTTC = (1+tva.nouvelleTVA)*p.prixHT;
+                    await Produit.findByIdAndUpdate(p._id, {$set:{TVA:tva.nouvelleTVA, prixTTC: nouveauPrixTTC}});
                 }
-
             }
-            await Produit.updateOne({idProduit:p.idProduit}, {$set:{TVA:p.TVA}});
         }
     })
     .then(() => {

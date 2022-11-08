@@ -5,7 +5,7 @@ const VariationTVASchema = mongoose.Schema({
     ancienneTVA: { type: Number, required: true },
     dateDébut: { type: Date, default: Date.now },
     dateFin: { type: Date, required: true },
-    idProduit: { type: mongoose.Types.ObjectId, required: true }
+    idProduit: { type: mongoose.ObjectId, required: true }
 });
 
 module.exports = mongoose.model('VariationTVA', VariationTVASchema);

@@ -1,22 +1,32 @@
 const VariationTVA = require('../models/variationTVAModel.js');
 
 // POST a VariationTVA
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
 
     const Produit = require('../models/produitModel.js');
-    
-    let dateDébut = Date.now;
-    // Check if the user entered a date
+
+    let dateDébut = Date.now();
+    // Check if the user entered a starting date
     if (typeof req.body.dateDébut != "undefined") {
-        dateDébut = req.body.dateDébut
+        dateDébut = new Date(req.body.dateDébut);
     }
+
+    let dateFin = null;
+    // Check if the user entered a final date
+    if (typeof req.body.dateFin != "undefined") {
+        dateFin = new Date(req.body.dateFin);
+    }
+
+    var mongoose = require('mongoose');
+    var id = mongoose.Types.ObjectId(req.body.idProduit);
+    let p = await Produit.findById(id);
 
     // Create a VariationTVA
     const variationTVA = new VariationTVA({
         nouvelleTVA: req.body.nouvelleTVA,
-        ancienneTVA: Produit.find({ idProduit: req.body.idProduit }).TVA,
+        ancienneTVA: p.TVA,
         dateDébut: dateDébut,
-        dateFin: req.body.dateFin,
+        dateFin: dateFin,
         idProduit: req.body.idProduit
     });
 
