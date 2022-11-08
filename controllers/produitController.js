@@ -95,3 +95,49 @@ exports.findByName = (req, res) => {
         });
     });
 };
+
+// UPDATE a Produit with id
+exports.updateById = (req, res) => {
+    // Find produit and update it
+    var mongoose = require('mongoose');
+    var id = mongoose.Types.ObjectId(req.body.id);
+    Produit.findByIdAndUpdate({ _id: id }, {
+        ...req.body.changes
+    })
+    .then(produit => {
+        if(!produit) {
+            return res.status(404).send({
+                message: "Produit not found with id " +
+                req.body.id
+            });
+        }
+        res.send("produit updated successfully");
+    }).catch(() => {
+        return res.status(500).send({
+            message: "Error updating Produit with id " +
+            req.body.id
+        });
+    });
+};
+
+// UPDATE a Produit with name
+exports.updateByName = (req, res) => {
+    // Find produit and update it
+    Produit.findOneAndUpdate({ nom: req.body.nom }, {
+        ...req.body.changes
+    })
+    .then(produit => {
+        if(!produit) {
+            return res.status(404).send({
+                message: "Produit not found with name " +
+                req.body.nom
+            });
+        }
+        res.send("produit updated successfully");
+    }).catch(() => {
+        return res.status(500).send({
+            message: "Error updating Produit with name " +
+            req.body.nom
+        });
+    });
+};
