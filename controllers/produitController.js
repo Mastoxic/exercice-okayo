@@ -38,7 +38,7 @@ exports.findAll = (req, res) => {
 
 
 // UPDATE all Produits' TVA
-exports.updateProduitsTVA = (req, res) => {
+exports.updateProduitsTVA = (req, res, next) => {
 
     const VariationTVA = require('../models/variationTVAModel.js');
 
@@ -68,11 +68,30 @@ exports.updateProduitsTVA = (req, res) => {
         }
     })
     .then(() => {
-        res.send("TVA des produits actualisée");
+        next();        
     })
     .catch(err => {
         res.status(500).send({
             message: err.message
+        });
+    });
+};
+
+// FIND a Produit by name
+exports.findByName = (req, res) => {
+    Produit.findOne({nom: req.body.nom})
+    .then(produit => {
+        if(produit) {
+            return res.status(404).send({
+                message: "Produit not found with name " +
+                req.body.nom
+            });
+        }
+        res.send(produit);
+    }).catch(() => {
+        return res.status(500).send({
+            message: "Error retrieving Produit with name " +
+            req.body.nom
         });
     });
 };

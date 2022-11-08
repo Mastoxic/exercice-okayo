@@ -77,3 +77,22 @@ exports.findAll = (req, res) => {
         });
     });
 };
+
+// FIND a Facture
+exports.findOne = (req, res) => {
+    Facture.findOne({ref: req.body.ref})
+    .then(facture => {
+        if(!facture) {
+            return res.status(404).send({
+                message: "Facture not found with ref " +
+                req.body.ref
+            });
+        }
+        res.send(facture);
+    }).catch(() => {
+        return res.status(500).send({
+            message: "Error retrieving Facture with ref " +
+            req.body.ref
+        });
+    });
+};

@@ -34,3 +34,22 @@ exports.findAll = (req, res) => {
         });
     });
 };
+
+// FIND a Client
+exports.findOne = (req, res) => {
+    Client.findOne({codeClient: req.body.codeClient})
+    .then(client => {
+        if(!client) {
+            return res.status(404).send({
+                message: "Client not found with codeClient " +
+                req.body.codeClient
+            });
+        }
+        res.send(client);
+    }).catch(() => {
+        return res.status(500).send({
+            message: "Error retrieving Client with codeClient " +
+            req.body.codeClient
+        });
+    });
+};
