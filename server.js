@@ -33,6 +33,9 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+// api route
+require('./routes/routes.js')(app);
+
 // simple route
 app.get("/", (req, res) => {
     res.json({ message: "Server lives!!!" });
